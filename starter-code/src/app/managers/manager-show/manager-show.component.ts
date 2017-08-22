@@ -21,6 +21,7 @@ export class ManagerShowComponent implements OnInit {
   		this.managersService.getOneManager(param.id)
   		.subscribe(response => {
   			console.log(response.json());
+       
   			this.oneManager = response.json();
   		});
   	});

@@ -1,15 +1,22 @@
 import { db } from '../models';
 let DB = db.models;
 
-var artistCreate = function() {
-	return DB.Artist.create({
-    name: 'Luciano Pavarotti',
-    photoUrl: 'http://img.informador.com.mx/biblioteca/imagen/677x508/811/810055.jpg',
-    nationality: 'Italiano',
-    instrument: 'Voice',
-    home_address: '1 Strada Roma'
-  });
-};
+var lucySongs = [
+	{
+		title: "O sole mio",
+		duration: "3:21",
+		date_of_release: "1990",
+		album_title: "Three Tenors in Concert",
+		artistId: ""
+	},
+	{
+		title: "Nessun dorma",
+		duration: "3:21",
+		date_of_release: "1990",
+		album_title: "Three Tenors in Concert",
+		artistId: ""
+	}
+];
 
 var managerCreate = function() {
 	return DB.Manager.create({
@@ -17,8 +24,48 @@ var managerCreate = function() {
     email: 'rbobby@gmail.com',
     office_number: '516-877-0304',
     cell_phone_number: '718-989-1231'
-	});
+	}).then(function(manager) {
+		console.log(manager);
+		DB.Artist.create({
+			name: 'Luciano Pavarotti',
+		    photoUrl: 'http://img.informador.com.mx/biblioteca/imagen/677x508/811/810055.jpg',
+		    nationality: 'Italiano',
+		    instrument: 'Voice',
+		    home_address: '1 Strada Roma',
+		    managerId: manager.id
+		  	}).then(function(artist) {
+		  	lucySongs.forEach(function(song) {
+		  		song.artistId = artist.id;
+		  	});
+  			DB.Song.bulkCreate(lucySongs);
+		})
+		
+		DB.Ad.create({
+			headline: "If you aint first your last",
+    		url: "http://www.sonypictures.com/movies/talladeganightstheballadofrickybobby/",
+    		managerId: manager.id
+		})
+	})
 };
+
+// var artistCreate = function() {
+// 	return DB.Artist.create({
+//     name: 'Luciano Pavarotti',
+//     photoUrl: 'http://img.informador.com.mx/biblioteca/imagen/677x508/811/810055.jpg',
+//     nationality: 'Italiano',
+//     instrument: 'Voice',
+//     home_address: '1 Strada Roma'
+//   	}).then(function(artist) {
+//   	lucySongs.forEach(function(song) {
+//   		song.artistId = artist.id;
+//   	}).then(function() {
+
+//   	})
+//   	DB.Song.bulkCreate(lucySongs);
+//   });
+// };
+
+
 
 var songCreate = function() {
 	return DB.Song.create({
@@ -29,8 +76,8 @@ var songCreate = function() {
 	});
 };
 
-artistCreate()
-.then(managerCreate)
+managerCreate()
+// .then(artistCreate)
 .then(songCreate)
 .then(function() {
 	process.exit();
