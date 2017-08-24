@@ -4,13 +4,14 @@ var Artist = db.models.Artist;
 var Ad = db.models.Ad;
 
 function index(req, res) {
-	Manager.findAll().then(function(managers) {
+	Manager.findAll({include: Ad}).then(function(managers) {
+
 		res.json(managers);
 	});
 }
 
 function show(req, res) {
-  Manager.findById(req.params.id, {include: Artist}, {include: Ad})
+  Manager.findById(req.params.id, {include: Artist})
   .then(function(manager){
     console.log(manager);
     if(!manager) res.send(res, "not found");

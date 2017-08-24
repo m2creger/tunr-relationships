@@ -26,6 +26,12 @@ var managerCreate = function() {
     cell_phone_number: '718-989-1231'
 	}).then(function(manager) {
 		console.log(manager);
+		DB.Ad.create({
+			headline: "If you aint first your last",
+    		url: "http://www.sonypictures.com/movies/talladeganightstheballadofrickybobby/",
+    		managerId: manager.id
+		})
+		
 		DB.Artist.create({
 			name: 'Luciano Pavarotti',
 		    photoUrl: 'http://img.informador.com.mx/biblioteca/imagen/677x508/811/810055.jpg',
@@ -40,11 +46,7 @@ var managerCreate = function() {
   			DB.Song.bulkCreate(lucySongs);
 		})
 		
-		DB.Ad.create({
-			headline: "If you aint first your last",
-    		url: "http://www.sonypictures.com/movies/talladeganightstheballadofrickybobby/",
-    		managerId: manager.id
-		})
+		
 	})
 };
 
